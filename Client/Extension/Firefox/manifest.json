@@ -4,7 +4,7 @@
   "name": "YTSubtitleLoader",
   "version": "2.3",
   "author": "RomanHue",
-
+  "homepage_url": "https://www.ytsubs.org/",
   "description": "Load custom subtitles / closed captions to YouTube",
 
   "content_scripts": [
@@ -12,6 +12,10 @@
       "matches": ["*://*.youtube.com/*"],
       "js": ["ytsl.js"]
     }
-  ]
+  ],
 
+  "permissions": [
+    "*://*.ytsubs.org/*",
+    "*://*.ytsubtitleloader.tk/*"
+  ]
 }
