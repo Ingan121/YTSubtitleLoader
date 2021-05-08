@@ -1,10 +1,9 @@
-/* YTSubtitleLoader v2.3 (Extension) by RomanHue
+/* YTSubtitleLoader v2.3.1 (Extension) by RomanHue
 (C) 2021 RomanHue. All rights reserved.
 Licensed under the MIT License - https://github.com/rhrhrhrhrhrh/YTSubtitleLoader/blob/master/LICENSE */
 
 // Define strings
-var stlServerUrl = "https://www.ytsubs.org",
-    stlAssRendererUrl = "https://2.ytsubtitleloader.tk/AssRenderer/";
+var stlServerUrl = "https://www.ytsubs.org";
 
 var stlStrings = {
     Unsupported: "Run this script in YouTube video page. (desktop / mobile - iframe, embed, etc are not supported)",
@@ -1059,7 +1058,7 @@ function stlLoadAssSubtitle(src, unselectDbSelect) {
     }
     if (!stlAssRendererLoaded) {
         workerUrl = stlAssRendererUrl + 'subtitles-octopus-worker.js';
-        legacyWorkerUrl = stlAssRendererUrl + 'subtitles-octopus-worker-legacy.js';
+        // legacyWorkerUrl = stlAssRendererUrl + 'subtitles-octopus-worker-legacy.js'; //LegacyWorker disabled as it is too large and useless on modern browsers
         var script = document.createElement('script');
         script.onload = function () {
             var options = {
@@ -1081,7 +1080,7 @@ function stlLoadAssSubtitle(src, unselectDbSelect) {
             subUrl: src, // Link to subtitles
             fonts: ['https://2.ytsubtitleloader.tk/AssRenderer/assets/fonts/NanumBarunGothic.ttf', 'https://2.ytsubtitleloader.tk/AssRenderer/assets/fonts/NanumBarunGothicBold.ttf', 'https://2.ytsubtitleloader.tk/AssRenderer/assets/fonts/NanumBarunGothicUltraLight.ttf'],
             workerUrl: workerUrl, // Link to WebAssembly-based file "libassjs-worker.js"
-            legacyWorkerUrl: legacyWorkerUrl // Link to non-WebAssembly worker
+            //legacyWorkerUrl: legacyWorkerUrl // Link to non-WebAssembly worker
         };
         stlAssInstance = new SubtitlesOctopus(options);
         stlAssLoaded = true;
