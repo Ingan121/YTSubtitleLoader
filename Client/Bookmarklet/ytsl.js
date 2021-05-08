@@ -156,7 +156,7 @@ var stlAutoLoadDb = localStorage.stlDisableAutoLoadDb != "true";
 
 var stlVersion = "2.3", stlType = "b";
 
-var stlAllowJsSubt = false;
+var stlAllowJsSubt = false; // Disallow deprecated YTSLJS unless overridden by stlDbg()
 
 // Initialize the main UI
 stlInitUi();
@@ -198,42 +198,42 @@ function stlInitUi() {
 
     // Defind YTSL CSS style
     var stlStyle = document.createElement("style");
-    stlStyle.innerHTML =
+    stlStyle.textContent =
     '.stlLabel { \
         float: left; \
         font-size: 16px; \
         margin-left: 2px; \
         margin-right: 2px; \
         color: var(--ytd-video-primary-info-renderer-title-color, var(--yt-spec-text-primary)); \
-    }\
-    .stlLink {\
+    } \
+    .stlLink { \
         color: inherit; \
         text-decoration: none !important; \
-    }\
-    .stlButton {\
+    } \
+    .stlButton { \
         background: none !important; \
         border: none; \
         padding: 0 !important; \
         margin-top: 0 !important; \
         margin-bottom: 0 !important; \
         cursor: pointer; \
-    }\
-    ::cue {\
+    } \
+    ::cue { \
         white-space: pre-wrap; \
         background: rgba(8, 8, 8, 0.75) none repeat scroll 0% 0%; \
         font-size: 33.0222px; \
         color: #ffffff; \
         fill: #ffffff; \
         font-family: "YouTube Noto", Roboto, "Arial Unicode Ms", Arial, Helvetica, Verdana, "PT Sans Caption", sans-serif; \
-    }\
-    .stlMenuItem {\
+    } \
+    .stlMenuItem { \
         width: 150px; \
         text-align: left; \
-    }\
-    .stlSubtInfoItem {\
+    } \
+    .stlSubtInfoItem { \
         width: 350px; \
-    }\
-    .stlWndBg {\
+    } \
+    .stlWndBg { \
         display: none; \
         position: fixed; \
         top: 0; \
@@ -242,8 +242,8 @@ function stlInitUi() {
         width: 100vw; \
         background: rgba(0, 0, 0, 0.5); \
         z-index: 5000; \
-    }\
-    .stlWnd {\
+    } \
+    .stlWnd { \
         background: var(--yt-spec-general-background-a, white); \
         position: absolute; \
         top: 50%; \
@@ -253,18 +253,18 @@ function stlInitUi() {
     }';
     // Hack for Korean-English font difference
     if (userLang.includes("ko")) {
-        stlStyle.innerHTML += ".stlLabelEngOnly { margin-top: 1px; }";
+        stlStyle.textContent += ".stlLabelEngOnly { margin-top: 1px; }";
     }
     document.head.appendChild(stlStyle);
 
     // CSS style for setting sub styles
     var videoSubtitleStyle = document.createElement("style");
-    videoSubtitleStyle.innerHTML = "::cue {  }";
+    videoSubtitleStyle.textContent = "::cue {  }";
     document.head.appendChild(videoSubtitleStyle);
 
     // CSS style for setting sub font size
     var videoSubtitleStyleForFontSize = document.createElement("style");
-    videoSubtitleStyleForFontSize.innerHTML = localStorage.stlFontSize || "::cue {  }";
+    videoSubtitleStyleForFontSize.textContent = localStorage.stlFontSize || "::cue {  }";
     document.head.appendChild(videoSubtitleStyleForFontSize);
 
     // Create the YTSL UI
@@ -314,8 +314,8 @@ function stlInitUi() {
         
         var str = prompt(stlStrings.EnterFontSizeDialog);
         if (str == null) return;
-        videoSubtitleStyleForFontSize.innerHTML = "::cue { font-size: " + (isNaN(str) ? str : str + "px") + "; }";
-        localStorage.setItem("stlFontSize", videoSubtitleStyleForFontSize.innerHTML);
+        videoSubtitleStyleForFontSize.textContent = "::cue { font-size: " + (isNaN(str) ? str : str + "px") + "; }";
+        localStorage.setItem("stlFontSize", videoSubtitleStyleForFontSize.textContent);
         fadeOut(stlMenuBackground);
         stlShowMessage(stlStrings.FontSizeChanged);
     };
@@ -559,7 +559,7 @@ function stlInitUi() {
 
     var stlSeparator = document.createElement("p");
     stlSeparator.className = "stlLabel";
-    stlSeparator.innerHTML = "|";
+    stlSeparator.textContent = "|";
     stlContainer.appendChild(stlSeparator);
 
     var stlUrlInputBtn = document.createElement("button");
@@ -848,7 +848,7 @@ function stlInitUi() {
     };
 
     function stlDbRefresh() {
-        stlDbSelect.innerHTML = "";
+        stlDbSelect.textContent = "";
         stlDbSelectPlaceholder.text = stlStrings.Loading;
         stlDbSelect.disabled = true;
         stlDbSelect.appendChild(stlDbSelectPlaceholder);
@@ -866,7 +866,7 @@ function stlInitUi() {
             setTimeout(function () {
                 video = document.getElementsByTagName("video")[0];
                 if (parseVideoId() !== null) {
-                    videoSubtitleStyleForFontSize.innerHTML = prevFontSize;
+                    videoSubtitleStyleForFontSize.textContent = prevFontSize;
                     if (stlMinimized) playerContainer.appendChild(stlRestoreBtn);
                     else playerContainer.appendChild(stlContainer);
                     if (!stlHidden) {
@@ -874,7 +874,7 @@ function stlInitUi() {
                         if (stlAutoLoadDb) {
                             stlDbRefresh();
                         } else {
-                            stlDbSelect.innerHTML = "";
+                            stlDbSelect.textContent = "";
                             stlDbSelectPlaceholder.text = stlStrings.NotSelected;
                             stlDbSelect.disabled = true;
                             stlDbSelect.appendChild(stlDbSelectPlaceholder);
@@ -889,8 +889,8 @@ function stlInitUi() {
                     stlHidden = true;
                     stlContainer.remove();
                     stlRestoreBtn.remove();
-                    prevFontSize = videoSubtitleStyleForFontSize.innerHTML;
-                    videoSubtitleStyleForFontSize.innerHTML = "::cue { font-size: 18px; }";
+                    prevFontSize = videoSubtitleStyleForFontSize.textContent;
+                    videoSubtitleStyleForFontSize.textContent = "::cue { font-size: 18px; }";
                 }
             }, 2000);
             prevUrl = window.location.href;
@@ -1127,7 +1127,7 @@ function stlShowSubtitle(src, unselectDbSelect) {
 // Function to show simple messages next to the STL UI
 function stlShowMessage(str) {
     fadeIn(stlMessage);
-    stlMessage.innerHTML = "| " + str;
+    stlMessage.textContent = "| " + str;
     console.log("YTSubtitleLoader: " + str);
     clearTimeout(stlMessageTimer);
     stlMessageTimer = setTimeout(function () {
